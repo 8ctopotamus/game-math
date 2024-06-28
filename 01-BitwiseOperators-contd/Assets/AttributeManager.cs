@@ -2,17 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System; // Note: We need this to use Convert
-
-/*
-    Bitwise Operators:
-    & (AND)
-    | (OR)
-    ^ (XOR)
-    ! (NOT)
-    |= OR + (Setting)
-    &= ~X (Unsetting)
-*/
+using System;
 
 public class AttributeManager : MonoBehaviour
 {
@@ -22,13 +12,13 @@ public class AttributeManager : MonoBehaviour
     static public int FLY = 2;
     static public int INVISIBLE = 1;
 
-    public Text attributeDisplay;
-    int attributes = 0;
 
-    void OnTriggerEnter(Collider other) 
+    public Text attributeDisplay;
+    public int attributes = 0;
+
+    private void OnTriggerEnter(Collider other)
     {
-        // Turning bit flags 'ON'
-        if (other.gameObject.tag == "MAGIC")
+        if(other.gameObject.tag == "MAGIC")
         {
             attributes |= MAGIC;
         }
@@ -48,28 +38,23 @@ public class AttributeManager : MonoBehaviour
         {
             attributes |= INVISIBLE;
         }
-
-        // Turning bit flags 'OFF'
         else if (other.gameObject.tag == "ANTIMAGIC")
         {
             attributes &= ~MAGIC;
         }
-
-        // Turning multiple bit flags 'ON'
-        else if (other.gameObject.tag == "MAGICANDINTELLIGENCE")
+        else if (other.gameObject.tag == "REMOVE")
         {
-            attributes |= MAGIC | INTELLIGENCE;
+            attributes &= ~ (INTELLIGENCE | MAGIC);
         }
-        // Turning multiple bit flags 'OFF'
-        else if (other.gameObject.tag == "ANTIMAGICANDINTELLIGENCE")
+        else if (other.gameObject.tag == "ADD")
         {
-            attributes &= ~(MAGIC | INTELLIGENCE);
+            attributes |= (INTELLIGENCE | MAGIC | CHARISMA);
         }
-        // Remove All
-        else if (other.gameObject.tag == "REMOVEALL")
+        else if (other.gameObject.tag == "RESET")
         {
             attributes = 0;
         }
+
     }
 
     // Start is called before the first frame update
